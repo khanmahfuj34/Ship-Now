@@ -43,7 +43,7 @@ export default function ShipmentOverviewChart() {
           height={height}
           fill={isMay ? "url(#mayPurpleGradient)" : "url(#defaultGrayGradient)"}
         />
-        
+
         {/* Top Border Line */}
         <line
           x1={x}
@@ -53,7 +53,7 @@ export default function ShipmentOverviewChart() {
           stroke="#333333"
           strokeWidth={1.8}
         />
-        
+
         {/* Centered Circle Dot & Tooltip (May only) */}
         {isMay && (
           <>
