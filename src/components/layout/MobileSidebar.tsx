@@ -17,7 +17,8 @@ export default function MobileSidebar({ isOpen, onClose }: MobileSidebarProps) {
   // Close drawer when route changes
   useEffect(() => {
     onClose();
-  }, [pathname, onClose]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pathname]);
 
   // Prevent scroll when drawer is open
   useEffect(() => {
