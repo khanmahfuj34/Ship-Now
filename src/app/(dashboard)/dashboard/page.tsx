@@ -40,30 +40,41 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="flex flex-col gap-6">
-      {/* 1. Header Greeting & Controls */}
+    <div className="flex flex-col gap-6 select-none">
+      {/* 1. Header Greeting & Controls (Spans full page width) */}
       <DashboardHeader />
 
-      {/* 2. Top Metrics Cards Row */}
-      <DashboardMetrics />
+      {/* 2. Main 2-Column Desktop Grid */}
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 items-start">
+        
+        {/* Left + Center Area (Columns 1-3) */}
+        <div className="lg:col-span-3 flex flex-col gap-6 min-w-0">
+          {/* Metrics Row */}
+          <DashboardMetrics />
+          
+          {/* Row of Charts 1 (Shipment Statistic & Profit Summary) */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <ShipmentOverviewChart />
+            <DeliveryPerformanceChart />
+          </div>
 
-      {/* 3. Main Split-Grid (Left / Right Columns) */}
-      <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 items-start">
-        {/* Left Column widgets */}
-        <div className="flex flex-col gap-6 min-w-0">
-          <ShipmentOverviewChart />
-          <ProductCategoriesPanel />
-          <LiveTrackingPanel />
+          {/* Row of Charts 2 (Product Categories & Live Tracking) */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <ProductCategoriesPanel />
+            <LiveTrackingPanel />
+          </div>
+
+          {/* Table Row (Recent Shipments) */}
           <RecentShipmentsTable />
         </div>
 
-        {/* Right Column widgets */}
-        <div className="flex flex-col gap-6 min-w-0">
-          <DeliveryPerformanceChart />
+        {/* Right Column Area (Column 4) */}
+        <div className="lg:col-span-1 flex flex-col gap-6 min-w-0">
           <ShipmentStatusChart />
           <AlertsPanel />
           <ActivityTimeline />
         </div>
+
       </div>
     </div>
   );
