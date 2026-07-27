@@ -852,7 +852,7 @@ Before submission, the following should be verified:
 | Form validation | Implemented |
 | Invoice master-detail behaviour | Implemented |
 | Responsive layouts | Implemented |
-| Public deployment | Pending final deployment |
+| Public deployment | Implemented |
 | README | Implemented |
 
 ---
