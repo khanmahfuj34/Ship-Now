@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import {
   BarChart,
   Bar,
@@ -12,6 +12,9 @@ import {
 import { shipmentStatsData } from "../../../data/dashboard/dashboard.mock";
 
 export default function ShipmentOverviewChart() {
+  const DEFAULT_ACTIVE_INDEX = 4; // May
+  const [activeIndex, setActiveIndex] = useState<number>(DEFAULT_ACTIVE_INDEX);
+
   // Format data values for Recharts
   const formattedData = shipmentStatsData.map((item, index) => {
     // Map June (index 5) to display "Jan" exactly as shown in the Figma reference design
@@ -26,22 +29,25 @@ export default function ShipmentOverviewChart() {
     };
   });
 
-  // Custom Bar Shape Renderer to support top lines, circle markers, and static tooltips
+  // Custom Bar Shape Renderer to support top lines, circle markers, and dynamic tooltips
   const CustomBar = (props: any) => {
-    const { x, y, width, height, payload } = props;
+    const { x, y, width, height, index, payload } = props;
     if (height === 0 || width === 0) return null;
 
-    const isMay = payload.month === "May";
+    const isActive = index === activeIndex;
 
     return (
-      <g>
+      <g
+        onMouseEnter={() => setActiveIndex(index)}
+        style={{ cursor: "pointer" }}
+      >
         {/* Background rect filled with vertical opacity gradients */}
         <rect
           x={x}
           y={y}
           width={width}
           height={height}
-          fill={isMay ? "url(#mayPurpleGradient)" : "url(#defaultGrayGradient)"}
+          fill={isActive ? "url(#mayPurpleGradient)" : "url(#defaultGrayGradient)"}
         />
 
         {/* Top Border Line */}
@@ -54,9 +60,9 @@ export default function ShipmentOverviewChart() {
           strokeWidth={1.8}
         />
 
-        {/* Centered Circle Dot & Tooltip (May only) */}
-        {isMay && (
-          <>
+        {/* Centered Circle Dot & Tooltip (Active/Hovered bar only) */}
+        {isActive && (
+          <g pointerEvents="none">
             <circle
               cx={x + width / 2}
               cy={y}
@@ -77,7 +83,7 @@ export default function ShipmentOverviewChart() {
                 ry={10}
                 fill="#E5E0FF"
               />
-              {/* Tooltip text: May 2030 */}
+              {/* Tooltip text: Month 2030 */}
               <text
                 x={x + width / 2}
                 y={y - 35}
@@ -87,9 +93,9 @@ export default function ShipmentOverviewChart() {
                 fontWeight="500"
                 fontFamily="inherit"
               >
-                May 2030
+                {payload.month} 2030
               </text>
-              {/* Tooltip text: 3,124 */}
+              {/* Tooltip text: dynamic shipment count */}
               <text
                 x={x + width / 2}
                 y={y - 20}
@@ -99,10 +105,10 @@ export default function ShipmentOverviewChart() {
                 fontWeight="800"
                 fontFamily="inherit"
               >
-                3,124
+                {payload.value.toLocaleString()}
               </text>
             </g>
-          </>
+          </g>
         )}
       </g>
     );
@@ -142,6 +148,7 @@ export default function ShipmentOverviewChart() {
             data={formattedData}
             margin={{ top: 20, right: 5, left: -25, bottom: 0 }}
             barCategoryGap="4%" // Creates the contiguous wide bar look
+            onMouseLeave={() => setActiveIndex(DEFAULT_ACTIVE_INDEX)}
           >
             <defs>
               {/* Default Gray Gradient */}
@@ -170,7 +177,11 @@ export default function ShipmentOverviewChart() {
               ticks={[0, 1.2, 2.4, 3.6, 4.8]}
               tickFormatter={(v) => `${v}K`}
             />
-            <Bar dataKey="displayValue" shape={<CustomBar />} />
+            <Bar
+              key="shipment-bar"
+              dataKey="displayValue"
+              shape={<CustomBar />}
+            />
           </BarChart>
         </ResponsiveContainer>
       </div>

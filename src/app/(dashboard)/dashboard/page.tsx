@@ -48,31 +48,49 @@ export default function DashboardPage() {
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 items-start">
         
         {/* Left + Center Area (Columns 1-3) */}
-        <div className="lg:col-span-3 flex flex-col gap-6 min-w-0">
+        <div className="contents md:flex md:flex-col md:gap-6 md:min-w-0 md:col-span-3 lg:col-span-3">
           {/* Metrics Row */}
-          <DashboardMetrics />
+          <div className="order-0 md:order-none min-w-0 w-full">
+            <DashboardMetrics />
+          </div>
           
           {/* Row of Charts 1 (Shipment Statistic & Profit Summary) */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <ShipmentOverviewChart />
-            <DeliveryPerformanceChart />
+          <div className="contents md:grid md:grid-cols-2 md:gap-6">
+            <div className="order-1 md:order-none min-w-0 w-full">
+              <ShipmentOverviewChart />
+            </div>
+            <div className="order-2 md:order-none min-w-0 w-full">
+              <DeliveryPerformanceChart />
+            </div>
           </div>
 
           {/* Row of Charts 2 (Product Categories & Live Tracking) */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <ProductCategoriesPanel />
-            <LiveTrackingPanel />
+          <div className="contents md:grid md:grid-cols-2 md:gap-6">
+            <div className="order-4 md:order-none min-w-0 w-full">
+              <ProductCategoriesPanel />
+            </div>
+            <div className="order-5 md:order-none min-w-0 w-full">
+              <LiveTrackingPanel />
+            </div>
           </div>
 
           {/* Table Row (Recent Shipments) */}
-          <RecentShipmentsTable />
+          <div className="order-7 md:order-none min-w-0 w-full">
+            <RecentShipmentsTable />
+          </div>
         </div>
 
         {/* Right Column Area (Column 4) */}
-        <div className="lg:col-span-1 flex flex-col gap-6 min-w-0">
-          <ShipmentStatusChart />
-          <AlertsPanel />
-          <ActivityTimeline />
+        <div className="contents md:flex md:flex-col md:gap-6 md:min-w-0 md:col-span-1 lg:col-span-1">
+          <div className="order-3 md:order-none min-w-0 w-full">
+            <ShipmentStatusChart />
+          </div>
+          <div className="order-6 md:order-none min-w-0 w-full">
+            <AlertsPanel />
+          </div>
+          <div className="order-8 md:order-none min-w-0 w-full">
+            <ActivityTimeline />
+          </div>
         </div>
 
       </div>
