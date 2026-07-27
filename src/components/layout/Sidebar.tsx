@@ -1,8 +1,9 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import Link from "next/link";
 import { mainNavigation, secondaryNavigation } from "../../config/navigation";
 import SidebarItem from "./SidebarItem";
 
@@ -13,9 +14,30 @@ interface SidebarProps {
 
 export default function Sidebar({ isCollapsed = null, setIsCollapsed }: SidebarProps) {
   const pathname = usePathname();
+  const router = useRouter();
+  const [profileOpen, setProfileOpen] = useState(false);
+  const profileRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (profileRef.current && !profileRef.current.contains(event.target as Node)) {
+        setProfileOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const handleLogout = () => {
+    if (typeof window !== "undefined") {
+      localStorage.removeItem("shipnow_user_email");
+    }
+    setProfileOpen(false);
+    router.push("/auth/login");
+  };
 
   // Determine aside element classes based on collapsed state
-  let asideClasses = "h-full bg-white border-r border-gray-border flex flex-col justify-between lg:justify-start lg:gap-6 py-6 flex-shrink-0 transition-all duration-300 select-none overflow-y-auto";
+  let asideClasses = "h-full bg-white border-r border-gray-border flex flex-col justify-between lg:justify-start lg:gap-6 py-6 flex-shrink-0 transition-all duration-300 select-none overflow-y-auto custom-sidebar-scrollbar";
   if (isCollapsed === true) {
     asideClasses += " w-[54px] px-2";
   } else if (isCollapsed === false) {
@@ -60,62 +82,95 @@ export default function Sidebar({ isCollapsed = null, setIsCollapsed }: SidebarP
           </span>
         </div>
 
-        {/* User Profile Card */}
-        <div className={`flex items-center rounded-xl border border-gray-border/30 bg-gray-light/60 transition-all duration-300 ${
-          isCollapsed === true
-            ? "p-1 justify-center"
-            : isCollapsed === false
-              ? "p-2 justify-between"
-              : "p-1.5 lg:p-2 justify-center lg:justify-between"
-        }`}>
-          <div className={`flex items-center min-w-0 transition-all duration-300 ${
-            isCollapsed === true
-              ? "gap-0"
-              : isCollapsed === false
-                ? "gap-2.5"
-                : "gap-0 lg:gap-2.5"
-          }`}>
-            <div className={`relative w-[30px] h-[30px] rounded-full overflow-hidden flex-shrink-0 border border-gray-border transition-all duration-300 ${
-              isCollapsed === true ? "mx-auto" : isCollapsed === false ? "mx-0" : "mx-auto lg:mx-0"
-            }`}>
-              <Image
-                src="/icons/profile pic.png"
-                alt="John Doe profile avatar"
-                fill
-                sizes="30px"
-                className="object-cover"
-              />
-            </div>
-            <div className={`flex flex-col min-w-0 transition-all duration-300 overflow-hidden ${
+        {/* User Profile Card with toggleable Dropdown */}
+        <div ref={profileRef} className="relative w-full">
+          <div
+            onClick={() => setProfileOpen(!profileOpen)}
+            className={`flex items-center rounded-xl border border-gray-border/30 bg-gray-light/60 transition-all duration-300 cursor-pointer hover:bg-gray-light/80 active:scale-[0.98] ${
               isCollapsed === true
-                ? "opacity-0 max-w-0 pointer-events-none hidden"
+                ? "p-1 justify-center"
                 : isCollapsed === false
-                  ? "opacity-100 max-w-[120px] flex"
-                  : "opacity-0 max-w-0 lg:opacity-100 lg:max-w-[120px] hidden lg:flex"
-            }`}>
-              <span className="font-sans text-[12px] font-bold text-dark truncate leading-tight">
-                John Doe
-              </span>
-              <span className="font-sans text-[10px] text-gray-medium leading-none">
-                Admin
-              </span>
-            </div>
-          </div>
-          <svg
-            className={`w-3.5 h-3.5 text-gray-medium cursor-pointer hover:text-dark transition-all duration-300 ${
-              isCollapsed === true
-                ? "opacity-0 scale-0 pointer-events-none hidden"
-                : isCollapsed === false
-                  ? "opacity-100 scale-100 block"
-                  : "opacity-0 scale-0 lg:opacity-100 lg:scale-100 hidden lg:block"
+                  ? "p-2 justify-between"
+                  : "p-1.5 lg:p-2 justify-center lg:justify-between"
             }`}
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            strokeWidth={2}
           >
-            <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-          </svg>
+            <div className={`flex items-center min-w-0 transition-all duration-300 ${
+              isCollapsed === true
+                ? "gap-0"
+                : isCollapsed === false
+                  ? "gap-2.5"
+                  : "gap-0 lg:gap-2.5"
+            }`}>
+              <div className={`relative w-[30px] h-[30px] rounded-full overflow-hidden flex-shrink-0 border border-gray-border transition-all duration-300 ${
+                isCollapsed === true ? "mx-auto" : isCollapsed === false ? "mx-0" : "mx-auto lg:mx-0"
+              }`}>
+                <Image
+                  src="/icons/profile pic.png"
+                  alt="John Doe profile avatar"
+                  fill
+                  sizes="30px"
+                  className="object-cover"
+                />
+              </div>
+              <div className={`flex flex-col min-w-0 transition-all duration-300 overflow-hidden ${
+                isCollapsed === true
+                  ? "opacity-0 max-w-0 pointer-events-none hidden"
+                  : isCollapsed === false
+                    ? "opacity-100 max-w-[120px] flex"
+                    : "opacity-0 max-w-0 lg:opacity-100 lg:max-w-[120px] hidden lg:flex"
+              }`}>
+                <span className="font-sans text-[12px] font-bold text-dark truncate leading-tight">
+                  John Doe
+                </span>
+                <span className="font-sans text-[10px] text-gray-medium leading-none">
+                  Admin
+                </span>
+              </div>
+            </div>
+            <svg
+              className={`w-3.5 h-3.5 text-gray-medium cursor-pointer hover:text-dark transition-all duration-300 ${
+                profileOpen ? "rotate-180" : ""
+              } ${
+                isCollapsed === true
+                  ? "opacity-0 scale-0 pointer-events-none hidden"
+                  : isCollapsed === false
+                    ? "opacity-100 scale-100 block"
+                    : "opacity-0 scale-0 lg:opacity-100 lg:scale-100 hidden lg:block"
+              }`}
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth={2}
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+            </svg>
+          </div>
+
+          {/* Profile Dropdown Panel */}
+          {profileOpen && (
+            <div className="absolute top-full left-0 mt-2 z-50 w-full min-w-[170px] bg-white border border-gray-border rounded-xl shadow-lg p-1.5 flex flex-col gap-1 font-sans text-xs">
+              <Link
+                href="/profile"
+                onClick={() => setProfileOpen(false)}
+                className="flex items-center px-3 py-2 text-gray-medium hover:text-dark hover:bg-gray-light rounded-lg transition-colors cursor-pointer"
+              >
+                <svg className="w-4 h-4 mr-2.5 shrink-0 text-gray-medium" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                </svg>
+                My Profile
+              </Link>
+              
+              <button
+                onClick={handleLogout}
+                className="flex items-center w-full text-left px-3 py-2 text-gray-medium hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors cursor-pointer focus:outline-none"
+              >
+                <svg className="w-4 h-4 mr-2.5 shrink-0 text-gray-medium hover:text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                </svg>
+                Logout
+              </button>
+            </div>
+          )}
         </div>
 
         {/* Main Navigation Group */}

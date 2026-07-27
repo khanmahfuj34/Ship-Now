@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo, useEffect } from "react";
+import React, { useState, useMemo } from "react";
 import { mockInvoices } from "../../../data/invoices/invoices.mock";
 import { Invoice, InvoiceStatus } from "../types/invoice.types";
 import InvoicesHeader from "./InvoicesHeader";
@@ -25,10 +25,13 @@ export default function InvoicesScreen() {
   // Active Detailed Invoice Card state
   const [activeInvoiceId, setActiveInvoiceId] = useState<string>("INV-1008"); // Pre-selected in Figma
 
-  // Reset page when filters change
-  useEffect(() => {
-    setPage(1);
-  }, [search, status, sortBy, sortOrder, pageSize]);
+  // Combined filter handlers — each one resets page to 1 in the same
+  // render batch instead of using an effect to sync state-from-state.
+  const handleSearchChange = (val: string) => { setSearch(val); setPage(1); };
+  const handleStatusChange = (val: string) => { setStatus(val); setPage(1); };
+  const handleSortByChange = (val: string) => { setSortBy(val); setPage(1); };
+  const handleSortOrderChange = (val: "asc" | "desc") => { setSortOrder(val); setPage(1); };
+  const handlePageSizeChange = (val: number) => { setPageSize(val); setPage(1); };
 
   // 2. Data Filtering, Sorting & Pagination Pipeline
   const filteredInvoices = useMemo(() => {
@@ -54,8 +57,10 @@ export default function InvoicesScreen() {
 
   const sortedInvoices = useMemo(() => {
     return [...filteredInvoices].sort((a, b) => {
-      let fieldA: any = a[sortBy as keyof Invoice];
-      let fieldB: any = b[sortBy as keyof Invoice];
+      // Default: read the field value directly; cast to string | number
+      // since all sortable primitive fields on Invoice are one of those two.
+      let fieldA: string | number = a[sortBy as keyof Invoice] as string | number;
+      let fieldB: string | number = b[sortBy as keyof Invoice] as string | number;
 
       if (sortBy === "company") {
         fieldA = a.company.name.toLowerCase();
@@ -135,13 +140,13 @@ export default function InvoicesScreen() {
           <div className="bg-white p-5 rounded-3xl border border-gray-border shadow-sm flex flex-col gap-4 w-full overflow-hidden lg:h-full justify-between">
             <InvoiceToolbar
               search={search}
-              onSearchChange={setSearch}
+              onSearchChange={handleSearchChange}
               status={status}
-              onStatusChange={setStatus}
+              onStatusChange={handleStatusChange}
               sortBy={sortBy}
-              onSortByChange={setSortBy}
+              onSortByChange={handleSortByChange}
               sortOrder={sortOrder}
-              onSortOrderChange={setSortOrder}
+              onSortOrderChange={handleSortOrderChange}
             />
 
             <div className="flex-grow">
@@ -164,7 +169,7 @@ export default function InvoicesScreen() {
               pageSize={pageSize}
               totalResults={totalResults}
               onPageChange={setPage}
-              onPageSizeChange={setPageSize}
+              onPageSizeChange={handlePageSizeChange}
             />
           </div>
         </div>

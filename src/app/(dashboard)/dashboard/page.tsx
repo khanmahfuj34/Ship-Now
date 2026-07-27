@@ -17,19 +17,19 @@ import ActivityTimeline from "../../../features/dashboard/components/ActivityTim
 
 export default function DashboardPage() {
   const router = useRouter();
-  const [email, setEmail] = useState<string | null>(null);
 
+  // Read localStorage once at mount time via lazy initializer — no effect needed
+  const [email] = useState<string | null>(() => {
+    if (typeof window === "undefined") return null;
+    return localStorage.getItem("shipnow_user_email");
+  });
+
+  // Effect is now only responsible for the redirect side-effect, not for setting state
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      const storedEmail = localStorage.getItem("shipnow_user_email");
-      if (!storedEmail) {
-        // Redirect to login if session is missing (mock route guard)
-        router.push("/auth/login");
-      } else {
-        setEmail(storedEmail);
-      }
+    if (!email) {
+      router.push("/auth/login");
     }
-  }, [router]);
+  }, [email, router]);
 
   if (!email) {
     return (
@@ -40,59 +40,45 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="flex flex-col gap-6 select-none">
+    <div className="flex flex-col gap-6 select-none w-full">
       {/* 1. Header Greeting & Controls (Spans full page width) */}
       <DashboardHeader />
 
-      {/* 2. Main 2-Column Desktop Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 items-start">
-        
+      {/* 2. Main 2-Column Desktop Grid for top sections */}
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 items-start w-full">
         {/* Left + Center Area (Columns 1-3) */}
-        <div className="contents md:flex md:flex-col md:gap-6 md:min-w-0 md:col-span-3 lg:col-span-3">
+        <div className="flex flex-col gap-6 min-w-0 col-span-1 md:col-span-3 lg:col-span-3">
           {/* Metrics Row */}
-          <div className="order-0 md:order-none min-w-0 w-full">
-            <DashboardMetrics />
-          </div>
+          <DashboardMetrics />
           
           {/* Row of Charts 1 (Shipment Statistic & Profit Summary) */}
-          <div className="contents md:grid md:grid-cols-2 md:gap-6">
-            <div className="order-1 md:order-none min-w-0 w-full">
-              <ShipmentOverviewChart />
-            </div>
-            <div className="order-2 md:order-none min-w-0 w-full">
-              <DeliveryPerformanceChart />
-            </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <ShipmentOverviewChart />
+            <DeliveryPerformanceChart />
           </div>
 
           {/* Row of Charts 2 (Product Categories & Live Tracking) */}
-          <div className="contents md:grid md:grid-cols-2 md:gap-6">
-            <div className="order-4 md:order-none min-w-0 w-full">
-              <ProductCategoriesPanel />
-            </div>
-            <div className="order-5 md:order-none min-w-0 w-full">
-              <LiveTrackingPanel />
-            </div>
-          </div>
-
-          {/* Table Row (Recent Shipments) */}
-          <div className="order-7 md:order-none min-w-0 w-full">
-            <RecentShipmentsTable />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <ProductCategoriesPanel />
+            <LiveTrackingPanel />
           </div>
         </div>
 
         {/* Right Column Area (Column 4) */}
-        <div className="contents md:flex md:flex-col md:gap-6 md:min-w-0 md:col-span-1 lg:col-span-1">
-          <div className="order-3 md:order-none min-w-0 w-full">
-            <ShipmentStatusChart />
-          </div>
-          <div className="order-6 md:order-none min-w-0 w-full">
-            <AlertsPanel />
-          </div>
-          <div className="order-8 md:order-none min-w-0 w-full">
-            <ActivityTimeline />
-          </div>
+        <div className="flex flex-col gap-6 min-w-0 col-span-1 lg:col-span-1">
+          <ShipmentStatusChart />
+          <AlertsPanel />
         </div>
+      </div>
 
+      {/* 3. Bottom Row: Recent Shipments & Activity Timeline (Equal Height on Desktop) */}
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 lg:items-stretch w-full">
+        <div className="col-span-1 md:col-span-3 lg:col-span-3 flex">
+          <RecentShipmentsTable />
+        </div>
+        <div className="col-span-1 lg:col-span-1 flex">
+          <ActivityTimeline />
+        </div>
       </div>
     </div>
   );

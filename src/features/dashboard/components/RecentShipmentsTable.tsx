@@ -18,7 +18,7 @@ export default function RecentShipmentsTable() {
   };
 
   return (
-    <div className="bg-white p-5 rounded-2xl border border-gray-border/50 shadow-sm flex flex-col select-none w-full min-h-[380px]">
+    <div className="bg-white p-5 rounded-2xl border border-gray-border/50 shadow-sm flex flex-col select-none w-full min-h-[380px] lg:h-full">
       {/* Header */}
       <div className="flex items-center justify-between mb-5">
         <span className="text-xs text-gray-medium font-semibold tracking-wide font-sans">

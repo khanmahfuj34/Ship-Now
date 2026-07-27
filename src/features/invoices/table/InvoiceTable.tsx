@@ -65,11 +65,11 @@ export default function InvoiceTable({
 
   return (
     <div className="w-full overflow-x-auto select-none">
-      <table className="w-full text-left font-sans border-collapse">
+      <table className="w-full min-w-[700px] text-left font-sans border-collapse">
         <thead>
           <tr className="border-b border-gray-border text-gray-medium font-bold text-[10px] uppercase tracking-wider h-10 select-none">
               {/* Checkbox Column */}
-              <th className="w-12 pl-4 py-2 text-left">
+              <th className="w-12 min-w-[48px] max-w-[48px] pl-4 py-2 text-left">
                 <label className="inline-flex items-center cursor-pointer">
                   <input
                     type="checkbox"

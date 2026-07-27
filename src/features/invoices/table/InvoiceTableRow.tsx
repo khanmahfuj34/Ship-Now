@@ -38,7 +38,7 @@ export default function InvoiceTableRow({
     >
       {/* 0. Checkbox Cell */}
       <td
-        className="w-12 pl-4 py-3 text-left"
+        className="w-12 min-w-[48px] max-w-[48px] pl-4 py-3 text-left"
         onClick={(e) => e.stopPropagation()} // Prevent selecting active view when checking box
       >
         <label className="inline-flex items-center cursor-pointer">

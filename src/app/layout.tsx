@@ -17,6 +17,10 @@ const outfit = Outfit({
 export const metadata: Metadata = {
   title: "ShipNow - Login",
   description: "Logistics and shipment management dashboard",
+  icons: {
+    icon: "/icons/image.png",
+    apple: "/icons/image.png",
+  },
 };
 
 export default function RootLayout({

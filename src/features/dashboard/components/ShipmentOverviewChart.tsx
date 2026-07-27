@@ -11,17 +11,138 @@ import {
 } from "recharts";
 import { shipmentStatsData } from "../../../data/dashboard/dashboard.mock";
 
+// ---------------------------------------------------------------------------
+// Types
+// Defined at module level so they are stable across renders
+// ---------------------------------------------------------------------------
+
+interface ChartDataPoint {
+  month: string;
+  value: number;
+  displayMonth: string;
+  displayValue: number;
+}
+
+interface CustomBarProps {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  index: number;
+  payload: ChartDataPoint;
+  // Extra props passed from the render callback
+  activeIndex: number;
+  onHover: (index: number) => void;
+}
+
+// ---------------------------------------------------------------------------
+// CustomBar — defined OUTSIDE the parent component so React never sees it as
+// a "new" component type between renders (fixes the "component created during
+// render" error).
+// ---------------------------------------------------------------------------
+
+function CustomBar({
+  x,
+  y,
+  width,
+  height,
+  index,
+  payload,
+  activeIndex,
+  onHover,
+}: CustomBarProps) {
+  if (height === 0 || width === 0) return null;
+
+  const isActive = index === activeIndex;
+
+  return (
+    <g onMouseEnter={() => onHover(index)} style={{ cursor: "pointer" }}>
+      {/* Background rect filled with vertical opacity gradients */}
+      <rect
+        x={x}
+        y={y}
+        width={width}
+        height={height}
+        fill={isActive ? "url(#mayPurpleGradient)" : "url(#defaultGrayGradient)"}
+      />
+
+      {/* Top Border Line */}
+      <line
+        x1={x}
+        y1={y}
+        x2={x + width}
+        y2={y}
+        stroke="#333333"
+        strokeWidth={1.8}
+      />
+
+      {/* Centered Circle Dot & Tooltip (Active/Hovered bar only) */}
+      {isActive && (
+        <g pointerEvents="none">
+          <circle
+            cx={x + width / 2}
+            cy={y}
+            r={4}
+            fill="#333333"
+            stroke="#FFFFFF"
+            strokeWidth={1.5}
+          />
+          {/* Tooltip Box Overlay */}
+          <g>
+            {/* Rounded rect background */}
+            <rect
+              x={x + width / 2 - 32}
+              y={y - 48}
+              width={64}
+              height={38}
+              rx={10}
+              ry={10}
+              fill="#E5E0FF"
+            />
+            {/* Tooltip text: Month 2030 */}
+            <text
+              x={x + width / 2}
+              y={y - 35}
+              textAnchor="middle"
+              fill="#757575"
+              fontSize="8"
+              fontWeight="500"
+              fontFamily="inherit"
+            >
+              {payload.month} 2030
+            </text>
+            {/* Tooltip text: dynamic shipment count */}
+            <text
+              x={x + width / 2}
+              y={y - 20}
+              textAnchor="middle"
+              fill="#333333"
+              fontSize="12"
+              fontWeight="800"
+              fontFamily="inherit"
+            >
+              {payload.value.toLocaleString()}
+            </text>
+          </g>
+        </g>
+      )}
+    </g>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// ShipmentOverviewChart
+// ---------------------------------------------------------------------------
+
+const DEFAULT_ACTIVE_INDEX = 4; // May
+
 export default function ShipmentOverviewChart() {
-  const DEFAULT_ACTIVE_INDEX = 4; // May
   const [activeIndex, setActiveIndex] = useState<number>(DEFAULT_ACTIVE_INDEX);
 
   // Format data values for Recharts
-  const formattedData = shipmentStatsData.map((item, index) => {
+  const formattedData: ChartDataPoint[] = shipmentStatsData.map((item, index) => {
     // Map June (index 5) to display "Jan" exactly as shown in the Figma reference design
-    let displayMonth = item.month;
-    if (index === 5) {
-      displayMonth = "Jan";
-    }
+    const displayMonth = index === 5 ? "Jan" : item.month;
     return {
       ...item,
       displayMonth,
@@ -29,90 +150,16 @@ export default function ShipmentOverviewChart() {
     };
   });
 
-  // Custom Bar Shape Renderer to support top lines, circle markers, and dynamic tooltips
-  const CustomBar = (props: any) => {
-    const { x, y, width, height, index, payload } = props;
-    if (height === 0 || width === 0) return null;
-
-    const isActive = index === activeIndex;
-
-    return (
-      <g
-        onMouseEnter={() => setActiveIndex(index)}
-        style={{ cursor: "pointer" }}
-      >
-        {/* Background rect filled with vertical opacity gradients */}
-        <rect
-          x={x}
-          y={y}
-          width={width}
-          height={height}
-          fill={isActive ? "url(#mayPurpleGradient)" : "url(#defaultGrayGradient)"}
-        />
-
-        {/* Top Border Line */}
-        <line
-          x1={x}
-          y1={y}
-          x2={x + width}
-          y2={y}
-          stroke="#333333"
-          strokeWidth={1.8}
-        />
-
-        {/* Centered Circle Dot & Tooltip (Active/Hovered bar only) */}
-        {isActive && (
-          <g pointerEvents="none">
-            <circle
-              cx={x + width / 2}
-              cy={y}
-              r={4}
-              fill="#333333"
-              stroke="#FFFFFF"
-              strokeWidth={1.5}
-            />
-            {/* Tooltip Box Overlay */}
-            <g>
-              {/* Rounded rect background */}
-              <rect
-                x={x + width / 2 - 32}
-                y={y - 48}
-                width={64}
-                height={38}
-                rx={10}
-                ry={10}
-                fill="#E5E0FF"
-              />
-              {/* Tooltip text: Month 2030 */}
-              <text
-                x={x + width / 2}
-                y={y - 35}
-                textAnchor="middle"
-                fill="#757575"
-                fontSize="8"
-                fontWeight="500"
-                fontFamily="inherit"
-              >
-                {payload.month} 2030
-              </text>
-              {/* Tooltip text: dynamic shipment count */}
-              <text
-                x={x + width / 2}
-                y={y - 20}
-                textAnchor="middle"
-                fill="#333333"
-                fontSize="12"
-                fontWeight="800"
-                fontFamily="inherit"
-              >
-                {payload.value.toLocaleString()}
-              </text>
-            </g>
-          </g>
-        )}
-      </g>
-    );
-  };
+  // Render callback — passes extra props to the stable CustomBar component.
+  // Using a render function (not JSX element) avoids the "component created
+  // during render" warning while still forwarding activeIndex and onHover.
+  const renderBar = (props: object) => (
+    <CustomBar
+      {...(props as Omit<CustomBarProps, "activeIndex" | "onHover">)}
+      activeIndex={activeIndex}
+      onHover={setActiveIndex}
+    />
+  );
 
   return (
     <div className="bg-white p-6 rounded-[24px] border border-gray-border/50 shadow-sm flex flex-col select-none h-[380px] w-full">
@@ -147,7 +194,7 @@ export default function ShipmentOverviewChart() {
           <BarChart
             data={formattedData}
             margin={{ top: 20, right: 5, left: -25, bottom: 0 }}
-            barCategoryGap="4%" // Creates the contiguous wide bar look
+            barCategoryGap="4%"
             onMouseLeave={() => setActiveIndex(DEFAULT_ACTIVE_INDEX)}
           >
             <defs>
@@ -180,7 +227,7 @@ export default function ShipmentOverviewChart() {
             <Bar
               key="shipment-bar"
               dataKey="displayValue"
-              shape={<CustomBar />}
+              shape={renderBar}
             />
           </BarChart>
         </ResponsiveContainer>

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import { shipmentsMock } from "../../data/shipments/shipments.mock";
 import { Shipment, ShipmentStatus } from "./types/shipment.types";
@@ -65,17 +65,15 @@ export default function ShipmentsScreen() {
   // View state is driven by the URL '?view=table' or '?view=grid'
   const view = (searchParams.get("view") as "table" | "grid") || "table";
 
-  // Reset tab/page on view changes to prevent filter mismatches
-  useEffect(() => {
-    setActiveTab("All");
-    setPage(1);
-    setSelectedShipmentIds([]);
-  }, [view]);
-
+  // Reset tab/page/selection when switching views — done here in the handler
+  // so all updates batch into one render (no effect needed).
   const handleViewChange = (newView: "table" | "grid") => {
     const params = new URLSearchParams(searchParams.toString());
     params.set("view", newView);
     router.push(`${pathname}?${params.toString()}`);
+    setActiveTab("All");
+    setPage(1);
+    setSelectedShipmentIds([]);
   };
 
   // 2. Data Transformation Pipeline
@@ -199,7 +197,7 @@ export default function ShipmentsScreen() {
   };
 
   return (
-    <div className="flex flex-col gap-6 w-full p-4 md:p-6 lg:p-8 select-none">
+    <div className="flex flex-col gap-6 w-full select-none">
       {/* 1. Header breadcrumbs & switchers */}
       <ShipmentsHeader currentView={view} onViewChange={handleViewChange} />
 

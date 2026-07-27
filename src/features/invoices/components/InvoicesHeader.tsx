@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export default function InvoicesHeader() {
   return (
-    <div className="flex flex-col gap-1.5 w-full select-none">
+    <div className="hidden md:flex flex-col gap-1.5 w-full select-none">
       <h1 className="text-3xl font-bold font-heading text-dark tracking-wide leading-none">
         Invoices & Billing
       </h1>

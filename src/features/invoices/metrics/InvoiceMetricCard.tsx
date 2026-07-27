@@ -18,8 +18,8 @@ export default function InvoiceMetricCard({
   return (
     <div className="bg-white p-5 rounded-2xl border border-gray-border/50 shadow-sm flex items-center gap-4 select-none w-full">
       {/* Icon on Left */}
-      <div className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 ${iconBg}`}>
-        <img src={iconSrc} alt={title} className="w-6 h-6 object-contain" />
+      <div className="w-12 h-12 flex items-center justify-center shrink-0">
+        <img src={iconSrc} alt={title} className="w-12 h-12 object-contain" />
       </div>
 
       {/* Text Details on Right */}

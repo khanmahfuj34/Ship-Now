@@ -33,3 +33,28 @@
 .transition-all-200 {
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
+
+/* Subtle custom scrollbar for Sidebar aside elements */
+.custom-sidebar-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(117, 117, 117, 0.2) transparent;
+}
+
+.custom-sidebar-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+
+.custom-sidebar-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-sidebar-scrollbar::-webkit-scrollbar-thumb {
+  background-color: rgba(117, 117, 117, 0.12);
+  border-radius: 9999px;
+  transition: background-color 0.2s ease;
+}
+
+.custom-sidebar-scrollbar:hover::-webkit-scrollbar-thumb {
+  background-color: rgba(133, 109, 243, 0.35); /* Subtle brand purple color on hover */
+}
+

@@ -12,6 +12,11 @@ interface ShipmentTableRowProps {
 export function CompanyLogo({ logoType }: { logoType: string }) {
   switch (logoType) {
     case "hex":
+    case "TechGear":
+    case "EcoLights":
+    case "SmartAppliance":
+    case "Epsilon":
+    case "Kappa":
       return (
         <div className="w-8 h-8 rounded-lg bg-dark flex items-center justify-center text-white shrink-0">
           <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor">
@@ -20,6 +25,11 @@ export function CompanyLogo({ logoType }: { logoType: string }) {
         </div>
       );
     case "triangle":
+    case "StyleHub":
+    case "ModaWear":
+    case "Alpha":
+    case "Zeta":
+    case "Lambda":
       return (
         <div className="w-8 h-8 rounded-lg bg-[#F3EFFF] flex items-center justify-center text-[#856DF3] shrink-0">
           <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor">
@@ -28,6 +38,11 @@ export function CompanyLogo({ logoType }: { logoType: string }) {
         </div>
       );
     case "house":
+    case "FreshNest":
+    case "GreenHaven":
+    case "Beta":
+    case "Eta":
+    case "Mu":
       return (
         <div className="w-8 h-8 rounded-lg bg-dark flex items-center justify-center text-white shrink-0">
           <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5}>
@@ -36,6 +51,11 @@ export function CompanyLogo({ logoType }: { logoType: string }) {
         </div>
       );
     case "ring":
+    case "FitPlus":
+    case "SunCore":
+    case "Gamma":
+    case "Theta":
+    case "Nu":
       return (
         <div className="w-8 h-8 rounded-lg bg-[#F8F7FF] border border-[#856DF3]/30 flex items-center justify-center text-[#856DF3] shrink-0">
           <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={3}>
@@ -44,6 +64,11 @@ export function CompanyLogo({ logoType }: { logoType: string }) {
         </div>
       );
     case "star":
+    case "AutoParts":
+    case "VitaFresh":
+    case "Delta":
+    case "Iota":
+    case "Xi":
       return (
         <div className="w-8 h-8 rounded-lg bg-[#FFF9EC] flex items-center justify-center text-[#FFA800] shrink-0">
           <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor">
@@ -134,7 +159,7 @@ export default function ShipmentTableRow({
   return (
     <tr className={`border-b border-gray-border/30 hover:bg-[#FDFDFD] transition-colors h-14 ${selected ? "bg-[#F8F7FF]/30" : ""}`}>
       {/* 0. Checkbox Cell */}
-      <td className="w-12 pl-4 py-3 text-left">
+      <td className="w-12 min-w-[48px] max-w-[48px] pl-4 py-3 text-left">
         <label className="inline-flex items-center cursor-pointer">
           <input
             type="checkbox"

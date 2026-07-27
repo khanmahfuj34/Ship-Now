@@ -117,7 +117,7 @@ export default function CreateShipmentForm() {
   };
 
   return (
-    <div className="flex flex-col gap-6 w-full select-none max-w-7xl lg:mx-0 p-4 md:p-6 lg:p-0">
+    <div className="flex flex-col gap-6 w-full select-none">
       {/* 1. Header & Breadcrumbs Row */}
       <div className="flex flex-col gap-1 w-full">
         <div className="flex items-center gap-3">

@@ -32,7 +32,7 @@ export default function ShipmentTableHeader({
     <thead>
       <tr className="border-b border-gray-border/50 text-[10px] font-extrabold text-gray-medium uppercase tracking-wider h-11 select-none">
         {/* Checkbox Column */}
-        <th className="w-12 pl-4 pb-3 text-left">
+        <th className="w-12 min-w-[48px] max-w-[48px] pl-4 pb-3 text-left">
           <label className="inline-flex items-center cursor-pointer">
             <input
               type="checkbox"

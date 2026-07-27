@@ -47,7 +47,7 @@ export default function ShipmentTable({
   return (
     <div className="bg-white p-5 rounded-2xl border border-gray-border/50 shadow-sm flex flex-col select-none w-full overflow-hidden">
       <div className="w-full overflow-x-auto">
-        <table className="w-full text-left font-sans border-collapse">
+        <table className="w-full min-w-[850px] text-left font-sans border-collapse">
           <ShipmentTableHeader
             allSelected={allSelected}
             onSelectAllClick={onSelectAll}

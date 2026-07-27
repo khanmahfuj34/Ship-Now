@@ -48,8 +48,8 @@ export default function ShipmentToolbar({
 
   return (
     <div className="flex flex-col gap-4 w-full select-none">
-      {/* 1. Main Toolbar Row */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
+      {/* 1. Main Toolbar Row (Desktop/Tablet) */}
+      <div className="hidden md:flex flex-row md:items-center justify-between gap-3">
         {/* Left Side: Tabs (Visible on Desktop/Tablet) */}
         <div className="hidden md:flex items-center bg-white p-1 rounded-full border border-gray-border/70 select-none">
           {tabs.map((tab) => (
@@ -174,7 +174,7 @@ export default function ShipmentToolbar({
       </div>
 
       {/* 2. Mobile Search & Add Action Row (Only visible on Mobile viewports) */}
-      <div className="flex md:hidden items-center gap-2 w-full">
+      <div className="flex md:hidden items-center gap-2.5 w-full">
         {/* Mobile Search input */}
         <div className="relative flex-1">
           <span className="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none text-gray-medium">
@@ -184,12 +184,27 @@ export default function ShipmentToolbar({
           </span>
           <input
             type="text"
-            placeholder="Search id, company, etc"
+            placeholder={view === "grid" ? "Search Shipment" : "Search id, company, etc"}
             value={search}
             onChange={(e) => onSearchChange(e.target.value)}
             className="w-full bg-[#F5F5F5] border border-transparent focus:bg-white focus:border-[#856DF3] focus:ring-2 focus:ring-[#856DF3]/20 transition-all duration-200 rounded-xl py-3 pl-10 pr-4 text-xs text-dark placeholder:text-gray-medium outline-none"
           />
         </div>
+
+        {/* Mobile Filter Button */}
+        <button
+          onClick={() => setIsFilterTrayOpen(!isFilterTrayOpen)}
+          className={`flex items-center justify-center w-11 h-11 border rounded-xl cursor-pointer transition-all duration-200 shrink-0 ${
+            isFilterTrayOpen || hasActiveFilters
+              ? "border-[#856DF3] text-[#856DF3] bg-[#F8F7FF]"
+              : "border-gray-border bg-white hover:bg-gray-light text-dark"
+          }`}
+          title="Filter options"
+        >
+          <svg className="w-4.5 h-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
+          </svg>
+        </button>
 
         {/* Mobile "+" Button */}
         <Link

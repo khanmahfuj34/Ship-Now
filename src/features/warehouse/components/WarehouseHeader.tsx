@@ -54,8 +54,8 @@ export default function WarehouseHeader({ activeTab, onTabChange }: WarehouseHea
 
   return (
     <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 w-full select-none">
-      {/* Breadcrumbs and Title */}
-      <div className="flex flex-col gap-1">
+      {/* Breadcrumbs and Title — hidden on mobile (MobileHeader shows the title) */}
+      <div className="hidden md:flex flex-col gap-1">
         <h1 className="text-2xl font-bold tracking-tight text-dark font-heading">
           Warehouse
         </h1>

@@ -62,7 +62,7 @@ export default function PackageStatusList({ packages }: PackageStatusListProps) 
       <div className="flex flex-col gap-3.5 mt-1">
         {filteredPackages.length === 0 ? (
           <div className="text-center py-6 text-gray-medium text-xs font-sans">
-            No packages under "{filter}"
+            No packages under &ldquo;{filter}&rdquo;
           </div>
         ) : (
           filteredPackages.map((pkg, idx) => (

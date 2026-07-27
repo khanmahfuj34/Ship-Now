@@ -68,10 +68,10 @@ export default function InvoiceToolbar({
           {/* New Invoice Button */}
           <button
             onClick={() => alert("Create New Invoice feature is coming soon!")}
-            className="flex items-center justify-center gap-1.5 px-4 py-2.5 bg-dark hover:bg-[#222222] text-white text-xs font-heading font-semibold rounded-xl cursor-pointer transition-all duration-200 active:scale-[0.98]"
+            className="flex items-center justify-center gap-1.5 px-3 sm:px-4 py-2.5 bg-dark hover:bg-[#222222] text-white text-xs font-heading font-semibold rounded-xl cursor-pointer transition-all duration-200 active:scale-[0.98] shrink-0"
           >
             <span className="text-sm font-bold leading-none">+</span>
-            <span>New Invoice</span>
+            <span className="hidden sm:inline">New Invoice</span>
           </button>
         </div>
       </div>
