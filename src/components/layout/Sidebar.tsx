@@ -15,7 +15,7 @@ export default function Sidebar({ isCollapsed = null, setIsCollapsed }: SidebarP
   const pathname = usePathname();
 
   // Determine aside element classes based on collapsed state
-  let asideClasses = "min-h-screen bg-white border-r border-gray-border flex flex-col justify-between py-6 flex-shrink-0 transition-all duration-300 select-none";
+  let asideClasses = "h-full bg-white border-r border-gray-border flex flex-col justify-between lg:justify-start lg:gap-6 py-6 flex-shrink-0 transition-all duration-300 select-none overflow-y-auto";
   if (isCollapsed === true) {
     asideClasses += " w-[54px] px-2";
   } else if (isCollapsed === false) {

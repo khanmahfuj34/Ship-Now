@@ -23,7 +23,7 @@ export const mainNavigation: NavigationItem[] = [
   },
   {
     label: "Shipments",
-    href: "/dashboard/shipments",
+    href: "/shipments",
     icon: "/icons/Shipments.png",
   },
   {

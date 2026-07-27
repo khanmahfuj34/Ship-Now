@@ -26,7 +26,7 @@ export default function AppShell({ children }: AppShellProps) {
   return (
     <div className="flex min-h-screen bg-[#F5F7FA]">
       {/* Sidebar for Desktop & Tablet Rail */}
-      <div className="hidden md:flex flex-shrink-0 transition-all duration-300">
+      <div className="hidden md:flex flex-shrink-0 transition-all duration-300 sticky top-0 h-dvh">
         <Sidebar isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} />
       </div>
 
