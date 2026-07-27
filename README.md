@@ -10,7 +10,7 @@ The implementation focuses on accurate Figma reproduction, responsive behaviour 
 
 ## Live Demo & Repository
 
-**Live Demo:** Coming soon  
+**Live Demo:** https://shipnow-chi.vercel.app/
 **GitHub Repository:** https://github.com/khanmahfuj34/Ship-Now
 
 > The production deployment URL will be added here before final submission.
