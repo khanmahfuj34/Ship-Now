@@ -47,7 +47,7 @@ export default function InvoiceTable({
 
   if (invoices.length === 0) {
     return (
-      <div className="bg-white p-10 rounded-2xl border border-gray-border shadow-sm flex flex-col items-center justify-center min-h-[340px] text-center select-none w-full">
+      <div className="p-10 flex flex-col items-center justify-center min-h-[300px] text-center select-none w-full">
         <div className="w-14 h-14 rounded-full bg-gray-light flex items-center justify-center text-gray-medium mb-3.5">
           <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -64,11 +64,10 @@ export default function InvoiceTable({
   }
 
   return (
-    <div className="bg-white p-5 rounded-2xl border border-gray-border shadow-sm flex flex-col select-none w-full overflow-hidden">
-      <div className="w-full overflow-x-auto">
-        <table className="w-full text-left font-sans border-collapse">
-          <thead>
-            <tr className="border-b border-gray-border text-gray-medium font-bold text-[10px] uppercase tracking-wider h-10 select-none">
+    <div className="w-full overflow-x-auto select-none">
+      <table className="w-full text-left font-sans border-collapse">
+        <thead>
+          <tr className="border-b border-gray-border text-gray-medium font-bold text-[10px] uppercase tracking-wider h-10 select-none">
               {/* Checkbox Column */}
               <th className="w-12 pl-4 py-2 text-left">
                 <label className="inline-flex items-center cursor-pointer">
@@ -140,7 +139,6 @@ export default function InvoiceTable({
             ))}
           </tbody>
         </table>
-      </div>
     </div>
   );
 }
