@@ -27,7 +27,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
             ref={ref}
             type={type}
             className={`w-full bg-gray-light text-dark font-sans placeholder:text-gray-medium text-sm rounded-xl py-3 px-4 transition-all duration-200 border border-transparent focus:outline-none focus:bg-white focus:border-brand focus:ring-2 focus:ring-brand/20 ${
-              error ? "border-red-500 focus:border-red-500 focus:ring-red-500/20" : ""
+              error ? "border-brand focus:border-brand focus:ring-brand/20" : ""
             } ${rightElement ? "pr-12" : ""} ${className}`}
             {...props}
           />
@@ -38,7 +38,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
           )}
         </div>
         {error && (
-          <span className="text-[11px] text-red-500 font-sans font-medium leading-none" role="alert">
+          <span className="text-[11px] text-brand font-sans font-semibold leading-none" role="alert">
             {error}
           </span>
         )}

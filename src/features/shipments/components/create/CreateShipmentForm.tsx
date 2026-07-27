@@ -16,13 +16,10 @@ import { Button } from "../../../../components/ui/button";
 export default function CreateShipmentForm() {
   const router = useRouter();
   const [successPayload, setSuccessPayload] = useState<CreateShipmentInput | null>(null);
-  const [randomShipmentId, setRandomShipmentId] = useState("");
-
-  // Generate a random high-fidelity Shipment ID on mount (e.g. #SH9583742)
-  useEffect(() => {
+  const [randomShipmentId] = useState(() => {
     const randomDigits = Math.floor(1000000 + Math.random() * 9000000);
-    setRandomShipmentId(`#SH${randomDigits}`);
-  }, []);
+    return `#SH${randomDigits}`;
+  });
 
   // Form setup with default values matching the Figma mockups
   const {
@@ -64,7 +61,7 @@ export default function CreateShipmentForm() {
         freightType: "road",
         carrier: "FedEx",
         method: "", // Leave blank to trigger validation error "Shipping method is required" shown in Figma
-        shipmentId: "", // Will be set dynamically by useEffect
+        shipmentId: randomShipmentId,
         date: "2035-03-21",
         notes: "",
       },
@@ -79,13 +76,6 @@ export default function CreateShipmentForm() {
       },
     },
   });
-
-  // Sync random ID once it is generated
-  useEffect(() => {
-    if (randomShipmentId) {
-      setValue("shipping.shipmentId", randomShipmentId);
-    }
-  }, [randomShipmentId, setValue]);
 
   // Form submission handler
   const onSubmit = (data: CreateShipmentInput) => {
@@ -127,7 +117,7 @@ export default function CreateShipmentForm() {
   };
 
   return (
-    <div className="flex flex-col gap-6 w-full select-none max-w-7xl mx-auto p-4 md:p-6 lg:p-8">
+    <div className="flex flex-col gap-6 w-full select-none max-w-7xl lg:mx-0 p-4 md:p-6 lg:p-0">
       {/* 1. Header & Breadcrumbs Row */}
       <div className="flex flex-col gap-1 w-full">
         <div className="flex items-center gap-3">

@@ -84,7 +84,7 @@ export default function ShippingSection({ register, errors, watch }: ShippingSec
               <select
                 {...register("shipping.method")}
                 className={`appearance-none w-full bg-[#F5F5F5] text-dark font-sans text-sm rounded-xl py-3 px-4 transition-all duration-200 border border-transparent focus:outline-none focus:bg-white focus:border-brand focus:ring-2 focus:ring-brand/20 cursor-pointer ${
-                  errors.shipping?.method ? "border-red-500 focus:border-red-500 focus:ring-red-500/20" : ""
+                  errors.shipping?.method ? "border-brand focus:border-brand focus:ring-brand/20" : ""
                 }`}
               >
                 <option value="">Select Method</option>
@@ -101,7 +101,7 @@ export default function ShippingSection({ register, errors, watch }: ShippingSec
               </span>
             </div>
             {errors.shipping?.method && (
-              <span className="text-[11px] text-red-500 font-sans font-medium leading-none" role="alert">
+              <span className="text-[11px] text-brand font-sans font-semibold leading-none" role="alert">
                 {errors.shipping.method.message}
               </span>
             )}
