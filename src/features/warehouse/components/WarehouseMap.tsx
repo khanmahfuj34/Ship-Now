@@ -48,8 +48,8 @@ export default function WarehouseMap({ sections }: WarehouseMapProps) {
             <div
               key={block.id}
               className={`w-9 h-9 rounded-xl flex items-center justify-center text-[10px] font-bold font-sans transition-all duration-300 ${
-                block.isFull
-                  ? "bg-brand text-white shadow-sm"
+                !block.isFull
+                  ? "bg-[#EBE7FF] border border-[#DCD6FF] text-brand shadow-sm"
                   : "bg-gray-light border border-gray-border text-gray-medium"
               }`}
             >
@@ -125,11 +125,11 @@ export default function WarehouseMap({ sections }: WarehouseMapProps) {
         {/* Bottom Legend details */}
         <div className="flex items-center gap-4 text-[9px] font-sans font-bold text-gray-medium uppercase mt-2 select-none">
           <div className="flex items-center gap-1.5">
-            <div className="w-3.5 h-3.5 rounded-md bg-[#FAF9FF] border border-gray-border" />
+            <div className="w-3.5 h-3.5 rounded-md bg-[#EBE7FF] border border-[#DCD6FF]" />
             <span>Available</span>
           </div>
           <div className="flex items-center gap-1.5">
-            <div className="w-3.5 h-3.5 rounded-md bg-brand" />
+            <div className="w-3.5 h-3.5 rounded-md bg-gray-light border border-gray-border" />
             <span>Full</span>
           </div>
         </div>

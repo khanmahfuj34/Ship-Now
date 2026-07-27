@@ -121,7 +121,7 @@ export default function InvoicesScreen() {
   };
 
   return (
-    <div className="flex flex-col gap-6 w-full max-w-7xl lg:mx-0 p-4 md:p-6 lg:p-0">
+    <div className="flex flex-col gap-6 w-full select-none">
       {/* Page Header */}
       <InvoicesHeader />
 

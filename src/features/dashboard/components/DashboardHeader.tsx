@@ -1,4 +1,5 @@
 import React from "react";
+import Link from "next/link";
 
 export default function DashboardHeader() {
   return (
@@ -40,8 +41,11 @@ export default function DashboardHeader() {
           </div>
         </div>
 
-        {/* Add New Shipping Button */}
-        <button className="flex items-center justify-center gap-1.5 py-3 px-4 md:px-5 bg-dark hover:bg-[#222222] active:scale-[0.98] font-heading font-semibold text-xs text-white rounded-xl shadow-sm transition-all cursor-pointer flex-shrink-0">
+        {/* Add New Shipping Link */}
+        <Link
+          href="/shipments/new"
+          className="flex items-center justify-center gap-1.5 py-3 px-4 md:px-5 bg-dark hover:bg-[#222222] active:scale-[0.98] font-heading font-semibold text-xs text-white rounded-xl shadow-sm transition-all cursor-pointer flex-shrink-0"
+        >
           <svg
             className="w-3.5 h-3.5"
             fill="none"
@@ -54,7 +58,7 @@ export default function DashboardHeader() {
           </svg>
           <span className="hidden sm:inline">Add New Shipping</span>
           <span className="sm:hidden">New Shipping</span>
-        </button>
+        </Link>
       </div>
     </div>
   );

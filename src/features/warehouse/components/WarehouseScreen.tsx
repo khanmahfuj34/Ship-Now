@@ -37,7 +37,7 @@ export default function WarehouseScreen() {
   }, [activeTab]);
 
   return (
-    <div className="w-full max-w-7xl lg:mx-0 p-4 md:p-6 lg:p-0 flex flex-col gap-6">
+    <div className="w-full flex flex-col gap-6 select-none">
       {/* 1. Header with Title and Tabs */}
       <WarehouseHeader activeTab={activeTab} onTabChange={setActiveTab} />
 
