@@ -18,20 +18,22 @@ import ActivityTimeline from "../../../features/dashboard/components/ActivityTim
 export default function DashboardPage() {
   const router = useRouter();
 
-  // Read localStorage once at mount time via lazy initializer — no effect needed
-  const [email] = useState<string | null>(() => {
-    if (typeof window === "undefined") return null;
-    return localStorage.getItem("shipnow_user_email");
-  });
+  const [email, setEmail] = useState<string | null>(null);
+  const [isMounted, setIsMounted] = useState(false);
 
-  // Effect is now only responsible for the redirect side-effect, not for setting state
   useEffect(() => {
-    if (!email) {
+    setIsMounted(true);
+    const storedEmail = localStorage.getItem("shipnow_user_email");
+    setEmail(storedEmail);
+  }, []);
+
+  useEffect(() => {
+    if (isMounted && !email) {
       router.push("/auth/login");
     }
-  }, [email, router]);
+  }, [email, isMounted, router]);
 
-  if (!email) {
+  if (!isMounted || !email) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-[#F5F7FA] text-gray-medium font-sans font-bold text-xs select-none">
         Checking session...

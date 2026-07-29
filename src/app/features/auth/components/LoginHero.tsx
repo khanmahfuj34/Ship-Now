@@ -2,7 +2,7 @@ import Image from "next/image";
 
 export default function LoginHero() {
     return (
-        <div className="w-full bg-[#856DF3] text-white flex flex-col justify-between p-8 md:p-12 lg:p-16 min-h-[460px] md:min-h-screen relative overflow-hidden select-none">
+        <div className="mobile-page w-full bg-[#856DF3] text-white flex flex-col justify-between p-8 md:p-12 lg:p-16 md:min-h-screen relative overflow-hidden select-none">
             {/* Background Decorative Glow (for premium aesthetic) */}
             <div
                 className="absolute top-[-20%] left-[-20%] w-[60%] h-[60%] rounded-full bg-white/10 blur-[120px] pointer-events-none"

@@ -58,3 +58,21 @@
   background-color: rgba(133, 109, 243, 0.35); /* Subtle brand purple color on hover */
 }
 
+/* Mobile-only scroll snapping and viewport styling */
+@media (max-width: 767px) {
+  .mobile-wrapper {
+    height: 100vh;
+    height: 100dvh;
+    overflow-y: auto;
+    scroll-snap-type: y mandatory;
+    scroll-behavior: smooth;
+  }
+  .mobile-page {
+    height: 100vh;
+    height: 100dvh;
+    width: 100%;
+    flex-shrink: 0;
+    scroll-snap-align: start;
+  }
+}
+

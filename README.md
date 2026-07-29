@@ -861,7 +861,7 @@ Before submission, the following should be verified:
 
 The application will be deployed using a publicly accessible frontend hosting provider.
 
-**Live URL:** Coming soon
+**Live URL:** https://shipnow-chi.vercel.app/ 
 
 The production URL will be verified without an authenticated browser session before final submission.
 
